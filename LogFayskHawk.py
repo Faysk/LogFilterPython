@@ -7,9 +7,9 @@ log_path = r"\\Name-Server\log"
 # Entra em um loop que continuará enquanto o servidor Name-Server estiver disponível
 while os.system(f"ping -n 1 Name-Server >nul 2>&1") == 0:
     # Conta o número de arquivos de log para cada nível (INFO, ERROR, WARNING)
-    info_count = len([filename for filename in os.listdir(log_path) if filename.endswith('.log') and ': INFO' in open(os.path.join(log_path, filename)).read()])
-    error_count = len([filename for filename in os.listdir(log_path) if filename.endswith('.log') and ': ERROR' in open(os.path.join(log_path, filename)).read()])
-    warning_count = len([filename for filename in os.listdir(log_path) if filename.endswith('.log') and ': WARNING' in open(os.path.join(log_path, filename)).read()])
+    info_count = sum([open(os.path.join(log_path, filename)).read().count(': INFO') for filename in os.listdir(log_path) if filename.endswith('.log')])
+    error_count = sum([open(os.path.join(log_path, filename)).read().count(': ERROR') for filename in os.listdir(log_path) if filename.endswith('.log')])
+    warning_count = sum([open(os.path.join(log_path, filename)).read().count(': WARNING') for filename in os.listdir(log_path) if filename.endswith('.log')])
 
     # Conta o número total de linhas em todos os arquivos de log
     total_count = sum([int(open(os.path.join(log_path, filename)).read().count('\n')) for filename in os.listdir(log_path) if filename.endswith('.log')])
